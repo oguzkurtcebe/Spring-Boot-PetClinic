@@ -2,7 +2,11 @@ package com.oguzkurtcebe.petclinic.web;
 
 import java.net.URI;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,37 +27,55 @@ public class PetClinicRestController {
 	@Autowired
 	PetClinicService petClinicservice;
 
-	@RequestMapping(method=RequestMethod.DELETE,value="/owner/{id}")
-	public ResponseEntity<?>deleteOwner(@PathVariable("id") Long id){
+	@RequestMapping(method = RequestMethod.GET, value = "/owner/{id}", produces = "application/json")
+	public ResponseEntity<?> getOwnerAsHateoasResource(@PathVariable("id") Long id) {
+		try {
+			Owner owner = petClinicservice.findOwner(id);
+			Link self = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id).withSelfRel();
+			Link create = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner").withRel("create");
+			Link update = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id)
+					.withRel("update");
+			Link delete = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id)
+					.withRel("delete");
+
+			Resource<Owner> resource = new Resource<Owner>(owner, self, update, create, delete);
+
+			return ResponseEntity.ok(resource);
+		} catch (OwnerNotFoundException e) {
+            return ResponseEntity.notFound().build();
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "/owner/{id}")
+	public ResponseEntity<?> deleteOwner(@PathVariable("id") Long id) {
 		try {
 			petClinicservice.deleteOwner(id);
 			return ResponseEntity.ok().build();
 		} catch (OwnerNotFoundException e) {
 			return ResponseEntity.notFound().build();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	
-	
-	@RequestMapping(method=RequestMethod.PUT,value="/owner/{id}")
-	public ResponseEntity<?>updateOwner(@PathVariable("id") Long id,@RequestBody Owner ownerRequest){
-		
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/owner/{id}")
+	public ResponseEntity<?> updateOwner(@PathVariable("id") Long id, @RequestBody Owner ownerRequest) {
+
 		try {
-			Owner owner=petClinicservice.findOwner(id);
+			Owner owner = petClinicservice.findOwner(id);
 			owner.setFirstName(ownerRequest.getFirstName());
 			owner.setLastName(ownerRequest.getLastName());
 			petClinicservice.updateOwner(owner);
 			return ResponseEntity.ok().build();
-			
+
 		} catch (OwnerNotFoundException ex) {
 			return ResponseEntity.notFound().build();
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-					
+
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/owner")
 	public ResponseEntity<URI> createOwner(@RequestBody Owner owner) {
 		try {
