@@ -1,4 +1,4 @@
 logging:
   level:
     org.springframework.web: debug  
-  file: petclinic2.log
+  file: petclinic.log
