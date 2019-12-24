@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.oguzkurtcebe.petclinic.dao.OwnerRepository;
 import com.oguzkurtcebe.petclinic.model.Owner;
-@Repository("ownerRepository")
+@Repository
 public class OwnerRepositoryJdbcImpl implements OwnerRepository {
 
 	@Autowired

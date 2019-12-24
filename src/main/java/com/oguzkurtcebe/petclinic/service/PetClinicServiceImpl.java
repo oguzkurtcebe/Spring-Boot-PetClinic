@@ -56,7 +56,7 @@ public class PetClinicServiceImpl implements PetClinicService {
 	public void deleteOwner(Long id) {
 		petRepository.deleteByOwnerId(id);
 		ownerRepository.delete(id);
-	//	if(true)throw new RuntimeException("testing rollback");
+	//if(true)throw new RuntimeException("testing rollback");
 
 	}
 
