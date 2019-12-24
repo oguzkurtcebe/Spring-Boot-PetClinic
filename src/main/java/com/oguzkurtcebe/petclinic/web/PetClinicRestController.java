@@ -33,12 +33,11 @@ public class PetClinicRestController {
 			Owner owner = petClinicservice.findOwner(id);
 			Link self = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id).withSelfRel();
 			Link create = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner").withRel("create");
-			Link update = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id)
-					.withRel("update");
+			Link update = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id).withRel("update");					
 			Link delete = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id)
 					.withRel("delete");
 
-			Resource<Owner> resource = new Resource<Owner>(owner, self, update, create, delete);
+			Resource<Owner> resource = new Resource<Owner>(owner, self, create, update, delete);
 
 			return ResponseEntity.ok(resource);
 		} catch (OwnerNotFoundException e) {

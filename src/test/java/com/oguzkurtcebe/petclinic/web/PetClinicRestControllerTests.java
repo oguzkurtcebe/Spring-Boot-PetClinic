@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.oguzkurtcebe.petclinic.model.Owner;
-
-import junit.framework.Assert;
-
 public class PetClinicRestControllerTests {
 private RestTemplate restTemplate;
 
@@ -25,26 +23,24 @@ public void setUp() {
 
 @Test
 public void testUpdateOwner() {
-	Owner owner=restTemplate.getForObject("http://localhost:8080/rest/owner/4", Owner.class);
+   Owner owner=restTemplate.getForObject("http://localhost:8080/rest/owner/3", Owner.class);
 	
-	MatcherAssert.assertThat(owner.getFirstName(),Matchers.equalTo("Çağan"));
+	MatcherAssert.assertThat(owner.getFirstName(),Matchers.equalTo("Eda"));
 	
-	owner.setFirstName("Emir Cagan");
-	restTemplate.put("http://localhost:8080/rest/owner/4", owner);
-
-	owner=restTemplate.getForObject("http://localhost:8080/rest/owner/4", Owner.class);
-	MatcherAssert.assertThat(owner.getFirstName(), Matchers.equalTo("Emir Cagan"));
+	owner.setFirstName("Edanur");
+	restTemplate.put("http://localhost:8080/rest/owner/3", owner);
+	owner=restTemplate.getForObject("http://localhost:8080/rest/owner/3", Owner.class);
+	MatcherAssert.assertThat(owner.getFirstName(), Matchers.equalTo("Edanur"));
 	}
 @Test
 public void testDeleteOwner() {
-	restTemplate.delete("http://localhost:8080/rest/owner/2");
+		restTemplate.delete("http://localhost:8080/rest/owner/2");
 	try {
 		restTemplate.getForEntity("http://localhost:8080/rest/owner/2", Owner.class);
-		Assert.fail("Should  have not returned owner");
+		Assert.fail("should not have owner");
 	} catch (RestClientException e) {
 		
-	}
-}
+}}
 
 @Test
 public void testCreateOwner() {
@@ -54,16 +50,15 @@ public void testCreateOwner() {
     
     URI location = restTemplate.postForLocation("http://localhost:8080/rest/owner",owner);
     Owner owner2=restTemplate.getForObject(location,Owner.class);
-    MatcherAssert.assertThat(owner.getFirstName(),Matchers.equalTo(owner.getFirstName()));
     MatcherAssert.assertThat(owner.getLastName(), Matchers.equalTo(owner.getLastName()));
     
 }
 
 @Test
 public void testGetOwnerById() {
-	ResponseEntity<Owner>response= restTemplate.getForEntity("http://localhost:8080/rest/owner/1",Owner.class);
+	ResponseEntity<Owner>response= restTemplate.getForEntity("http://localhost:8080/rest/owner/3",Owner.class);
 	
 	MatcherAssert.assertThat(response.getStatusCodeValue(),Matchers.equalTo(200));
-	MatcherAssert.assertThat(response.getBody().getFirstName(),Matchers.equalTo("Oguz"));
+	MatcherAssert.assertThat(response.getBody().getFirstName(),Matchers.equalTo("Eda"));
 }
 }

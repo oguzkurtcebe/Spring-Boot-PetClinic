@@ -63,7 +63,8 @@ private RowMapper<Owner>rowMapper=new RowMapper<Owner>() {
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
+	String sql="delete from t_owner where id = ?";
+	jdbcTemplate.update(sql, id);
 
 	}
 
