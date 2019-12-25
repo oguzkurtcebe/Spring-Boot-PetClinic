@@ -5,6 +5,7 @@ import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.oguzkurtcebe.petclinic.dao.OwnerRepository;
@@ -13,7 +14,7 @@ import com.oguzkurtcebe.petclinic.exception.OwnerNotFoundException;
 import com.oguzkurtcebe.petclinic.model.Owner;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class PetClinicServiceImpl implements PetClinicService {
 
 	private OwnerRepository ownerRepository;
@@ -30,16 +31,19 @@ public class PetClinicServiceImpl implements PetClinicService {
 	}
 	
 	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Owner> findOwners() {
 		return ownerRepository.findAll();
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Owner> findOwners(String lastname) {
 		return ownerRepository.findByLastName(lastname);
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public Owner findOwner(Long id) throws OwnerNotFoundException {
 		Owner owner=ownerRepository.findById(id);
 		if(owner==null) throw new OwnerNotFoundException("Owner not Found");

@@ -28,7 +28,7 @@ public class OwnerRepositoryJpaImpl implements OwnerRepository {
 
 	@Override
 	public List<Owner> findByLastName(String lastName) {
-		return entityManager.createQuery("from Owner where lastName = :lastName",Owner.class).setParameter("Lastname",lastName)
+		return entityManager.createQuery("from Owner where lastName = :lastName",Owner.class).setParameter("LastName",lastName)
 				.getResultList();
 	}
 
