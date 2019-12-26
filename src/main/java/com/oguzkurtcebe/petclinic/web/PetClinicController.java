@@ -14,6 +14,14 @@ public class PetClinicController {
 	@Autowired
 	private PetClinicService petClinicService;
 	
+	@RequestMapping(value="/login.html")
+	public ModelAndView login() {
+		ModelAndView mav=new ModelAndView();
+		mav.setViewName("login");
+		return mav;
+				
+	}
+	
 	@RequestMapping(value={"/","/index.html"})
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView();
