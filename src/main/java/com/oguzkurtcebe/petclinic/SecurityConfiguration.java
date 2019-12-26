@@ -10,7 +10,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/**/facicon,ico","/css/**","/js/**","/images/**","/webjars/**");
+		http.authorizeRequests().antMatchers("/**/favicon.ico", "/css/**", "js/**", "/images/**", "/webjars/**")
+		.permitAll();
 		http.authorizeRequests().anyRequest().authenticated();
 		http.formLogin();
 	}
