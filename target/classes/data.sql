@@ -1,3 +1,14 @@
+INSERT INTO USERS VALUES('user1','{noop}secret',TRUE);
+INSERT INTO USERS VALUES('user2','{noop}secret2',TRUE);
+INSERT INTO USERS VALUES('user3','{noop}secret3',TRUE);
+
+INSERT INTO AUTHORITIES VALUES('user1','ROLE_USER');
+INSERT INTO AUTHORITIES VALUES('user2','ROLE_USER');
+INSERT INTO AUTHORITIES VALUES('user2','ROLE_EDITOR');
+INSERT INTO AUTHORITIES VALUES('user3','ROLE_USER');
+INSERT INTO AUTHORITIES VALUES('user3','ROLE_EDITOR');
+INSERT INTO AUTHORITIES VALUES('user3','ROLE_ADMIN');
+
 INSERT INTO t_owner (id,first_name,last_name) VALUES (1, 'Ziya', 'Ferit');
 INSERT INTO t_owner (id,first_name,last_name) VALUES (2, 'Beşir', 'Dal');
 INSERT INTO t_owner (id,first_name,last_name) VALUES (3, 'Eda', 'Rize');
