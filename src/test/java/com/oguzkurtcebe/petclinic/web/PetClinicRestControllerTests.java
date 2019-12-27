@@ -8,6 +8,7 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.client.RestClientException;
@@ -21,7 +22,7 @@ private RestTemplate restTemplate;
 @Before
 public void setUp() {
 	 	restTemplate=new RestTemplate();
-	 	BasicAuthorizationInterceptor basicAuthorizationInterceptor=new BasicAuthorizationInterceptor("user", "secret");
+	 	BasicAuthorizationInterceptor basicAuthorizationInterceptor=new BasicAuthorizationInterceptor("user2", "secret2");
 	 	restTemplate.setInterceptors(Arrays.asList(basicAuthorizationInterceptor));
 }
 
@@ -38,9 +39,11 @@ public void testUpdateOwner() {
 	}
 @Test
 public void testDeleteOwner() {
-		restTemplate.delete("http://localhost:8080/rest/owner/2");
+		
+	ResponseEntity<Void> responseEntity= restTemplate.exchange("http://localhost:8080/rest/owner/1", HttpMethod.DELETE,null,Void.class);
+	//restTemplate.delete("http://localhost:8080/rest/owner/2");
 	try {
-		restTemplate.getForEntity("http://localhost:8080/rest/owner/2", Owner.class);
+		restTemplate.getForEntity("http://localhost:8080/rest/owner/1", Owner.class);
 		Assert.fail("should not have owner");
 	} catch (RestClientException e) {
 		
