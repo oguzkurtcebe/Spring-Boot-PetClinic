@@ -2,9 +2,12 @@ package com.oguzkurtcebe.petclinic.web;
 
 import java.lang.invoke.MethodType;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +30,13 @@ public class PetClinicEditOwnerController {
 	}
 
 	@RequestMapping(value="/owners/update/{id}",method=RequestMethod.POST)
-	public String handleFormSubmit(@ModelAttribute Owner owner) {
-		 petClinicService.updateOwner(owner);
+	public String handleFormSubmit(@ModelAttribute @Valid Owner owner,BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) {
+			return "editOwner";
+		}
+		
+		petClinicService.updateOwner(owner);
 		
 		
 		return "redirect:/owners";
