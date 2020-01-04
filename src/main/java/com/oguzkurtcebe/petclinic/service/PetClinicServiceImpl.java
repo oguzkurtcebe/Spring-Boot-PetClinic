@@ -4,6 +4,8 @@ import java.util.List;
 import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,6 +22,9 @@ public class PetClinicServiceImpl implements PetClinicService {
 
 	private OwnerRepository ownerRepository;
 	private PetRepository petRepository;
+	
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	@Autowired
 	public void setPetRepository(PetRepository petRepository) {
@@ -56,6 +61,12 @@ public class PetClinicServiceImpl implements PetClinicService {
 	@Override
 	public void createOwner(Owner owner) {
 		ownerRepository.create(owner);
+		SimpleMailMessage msg=new SimpleMailMessage();
+		msg.setFrom("o@k");
+		msg.setTo("k@o");
+		msg.setSubject("Owner oluşturuldu..");
+		msg.setText("Owner id si:"+owner.getId()+" başarıyla oluşturuldu");
+		mailSender.send(msg);
 
 	}
 
