@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.oguzkurtcebe.petclinic.model.Owner;
 import com.oguzkurtcebe.petclinic.service.PetClinicService;
@@ -28,8 +29,9 @@ public class PetClinicDeleteOwnerController {
 	}
 
 	@RequestMapping(value = "/owners/delete/{id}", method = RequestMethod.POST)
-	public String handleFormSubmit(@PathVariable Long id) {
+	public String handleFormSubmit(@PathVariable Long id,RedirectAttributes redirectAttributes) {
          petClinicService.deleteOwner(id);
+         redirectAttributes.addFlashAttribute("message","Kayıt silindi id'si ile birlikte silindi..."+id);
          return "redirect:/owners";
 	}
 

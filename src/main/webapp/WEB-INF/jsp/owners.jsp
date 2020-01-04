@@ -13,22 +13,21 @@
 			<tr>
 				<td>Id</td>
 				<td>Firstname</td>
-			    <td>Lastname</td>
+				<td>Lastname</td>
 			</tr>
 
 		</thead>
 		<c:forEach items="${owners}" var="owner">
 			<tr>
 				<td>${owner.id}</td>
-				<td>${owner.firstName}</td>			
+				<td>${owner.firstName}</td> 
 				<td>${owner.lastName}</td>
-				
 			</tr>
-
-
 		</c:forEach>
-
-
 	</table>
+	<c:if test="${not empty message}">
+		<div style="color:blue">
+		${message}</div>
+	</c:if>
 </body>
 </html>
