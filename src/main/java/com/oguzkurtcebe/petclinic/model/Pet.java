@@ -14,12 +14,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="t_pet")
-public class Pet {
+public class Pet extends BaseEntity {
 
-@Id
-@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="petClinicSeqGen")
-@SequenceGenerator(name="petClinicSeqGen",sequenceName="petclinic_sequence")
-private Long id;
 
 @Column(name="name")
 private String name;
@@ -29,12 +25,7 @@ private Date birthDate;
 @ManyToOne
 @JoinColumn(name="owner_id")
 private Owner owner;
-public Long getId() {
-	return id;
-}
-public void setId(Long id) {
-	this.id = id;
-}
+
 public String getName() {
 	return name;
 }
@@ -55,7 +46,7 @@ public void setOwner(Owner owner) {
 }
 @Override
 public String toString() {
-	return "Pet [id=" + id + ", name=" + name + ", birtDate=" + birthDate + ", owner=" + owner + "]";
+	return "Pet [id=" + getId() + ", name=" + name + ", birtDate=" + birthDate + ", owner=" + owner + "]";
 }
 
 
