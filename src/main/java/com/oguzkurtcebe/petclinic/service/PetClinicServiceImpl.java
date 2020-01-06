@@ -13,8 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.oguzkurtcebe.petclinic.dao.OwnerRepository;
 import com.oguzkurtcebe.petclinic.dao.PetRepository;
+import com.oguzkurtcebe.petclinic.dao.jpa.VetRepository;
 import com.oguzkurtcebe.petclinic.exception.OwnerNotFoundException;
+import com.oguzkurtcebe.petclinic.exception.VetNotFoundException;
 import com.oguzkurtcebe.petclinic.model.Owner;
+import com.oguzkurtcebe.petclinic.model.Vet;
 
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -22,6 +25,9 @@ public class PetClinicServiceImpl implements PetClinicService {
 
 	private OwnerRepository ownerRepository;
 	private PetRepository petRepository;
+	private VetRepository vetRepository;
+	
+	
 	
 	@Autowired
 	private JavaMailSender mailSender;
@@ -36,6 +42,10 @@ public class PetClinicServiceImpl implements PetClinicService {
 		this.ownerRepository = ownerRepository;
 	}
 	
+	@Autowired
+	public void setVetRepository(VetRepository vetRepository) {
+		this.vetRepository = vetRepository;
+	}
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	@Secured(value={"ROLE_USER","ROLE_EDITOR"})
@@ -81,6 +91,17 @@ public class PetClinicServiceImpl implements PetClinicService {
 	@Override
 	public void updateOwner(Owner owner) {
 		ownerRepository.update(owner);
+	}
+
+	@Override
+	public List<Vet> findVets() {
+		return vetRepository.findAll();
+	}
+
+	@Override
+	public Vet findVet(Long id) throws VetNotFoundException {
+		return vetRepository.findById(id).orElseThrow(()->{return new VetNotFoundException("Vet id Not found :"+id);});
+		
 	}
 
 }

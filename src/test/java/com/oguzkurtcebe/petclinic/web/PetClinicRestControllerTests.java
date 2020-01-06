@@ -31,6 +31,7 @@ public class PetClinicRestControllerTests {
 	@Before
 	public void setUp() {
 		restTemplate.withBasicAuth("user2", "secret2");
+		
 	}
 
 	@Test
@@ -73,7 +74,6 @@ public class PetClinicRestControllerTests {
 	@Test
 	public void testGetOwnerById() {
 		ResponseEntity<Owner> response = restTemplate.getForEntity("http://localhost:8080/rest/owner/1", Owner.class);
-
 		MatcherAssert.assertThat(response.getStatusCodeValue(), Matchers.equalTo(200));
 		MatcherAssert.assertThat(response.getBody().getFirstName(), Matchers.equalTo("Ziya"));
 	}
