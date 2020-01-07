@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
@@ -33,7 +34,8 @@ public class PetClinicRestController {
 			Owner owner = petClinicservice.findOwner(id);
 			Link self = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id).withSelfRel();
 			Link create = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner").withRel("create");
-			Link update = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id).withRel("update");					
+			Link update = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id)
+					.withRel("update");
 			Link delete = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner/" + id)
 					.withRel("delete");
 
@@ -41,7 +43,7 @@ public class PetClinicRestController {
 
 			return ResponseEntity.ok(resource);
 		} catch (OwnerNotFoundException e) {
-            return ResponseEntity.notFound().build();
+			return ResponseEntity.notFound().build();
 		}
 	}
 
@@ -88,8 +90,10 @@ public class PetClinicRestController {
 		}
 	}
 
+	@Cacheable("allOwners")
 	@RequestMapping(method = RequestMethod.GET, value = "/owners")
 	public ResponseEntity<List<Owner>> getOwners() {
+		System.out.println(">>>>inside getOwnerss...");
 		List<Owner> owner = petClinicservice.findOwners();
 		return ResponseEntity.ok(owner);
 
