@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -31,7 +32,7 @@ public class PetClinicRestControllerTests {
 	@Before
 	public void setUp() {
 		restTemplate.withBasicAuth("user2", "secret2");
-		
+
 	}
 
 	@Test
@@ -77,4 +78,16 @@ public class PetClinicRestControllerTests {
 		MatcherAssert.assertThat(response.getStatusCodeValue(), Matchers.equalTo(200));
 		MatcherAssert.assertThat(response.getBody().getFirstName(), Matchers.equalTo("Ziya"));
 	}
+
+	@Test
+	public void testServiceLevelValidation() {
+		Owner owner = new Owner();
+		//owner.setFirstName("k");
+		//owner.setLastName("s");
+		ResponseEntity<URI> responseEntity = restTemplate.postForEntity("http://localhost:8080/rest/owner", owner,URI.class);
+				
+		MatcherAssert.assertThat(responseEntity.getStatusCode(), Matchers.equalTo(HttpStatus.PRECONDITION_FAILED));
+
+	}
+
 }
