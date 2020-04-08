@@ -6,6 +6,6 @@ public interface RegisterRepository {
 void create(Owner owner);
 void update(Owner owner);
 void delete(Long id);
-
+//?????
 
 }
