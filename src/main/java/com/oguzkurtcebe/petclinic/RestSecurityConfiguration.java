@@ -13,7 +13,11 @@ public class RestSecurityConfiguration extends AbstractSecurityConfiguration {
 
 		//super.configure(http);
 		http.antMatcher("/rest/**");
+<<<<<<< HEAD
 		http.authorizeRequests().antMatchers("/rest/**").access("hasRole('EDITOR')");
+=======
+	//	http.authorizeRequests().antMatchers("/rest/**").access("hasRole('EDITOR')");
+>>>>>>> branch 'master' of https://github.com/oguzkurtcebe/Spring-Boot-PetClinic.git
 		http.csrf().disable();
 		http.httpBasic();
 		
